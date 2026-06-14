@@ -1,1 +1,751 @@
-# 3-2jinro
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI AI 기반 디지털 미디어 환경과 콘텐츠 제작자의 사회적 책임</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    :root {
+      --ink: #0e0e0e;
+      --paper: #f7f5f0;
+      --mid: #6b6b6b;
+      --accent: #1a3a5c;
+      --red: #c0392b;
+      --rule: #d4cfc7;
+      --highlight: #e8f0f8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--accent);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      height: 52px;
+      overflow-x: auto;
+    }
+    nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+    nav .logo {
+      color: #fff;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-right: auto;
+      white-space: nowrap;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--accent);
+      color: #fff;
+      padding: 80px 2rem 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          rgba(255,255,255,0.04) 39px,
+          rgba(255,255,255,0.04) 40px
+        );
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.35;
+      max-width: 760px;
+      margin: 0 auto 1.4rem;
+      position: relative;
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 580px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      display: block;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── SECTION ── */
+    section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.6rem;
+    }
+    .section-label span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    h2 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 1.4rem;
+    }
+
+    h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 2rem 0 0.6rem;
+    }
+
+    p {
+      color: #2b2b2b;
+      margin-bottom: 1rem;
+      font-size: 0.97rem;
+    }
+
+    /* ── LEAD ── */
+    .lead {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.75;
+      color: var(--ink);
+      border-left: 3px solid var(--accent);
+      padding-left: 1.2rem;
+      margin-bottom: 1.6rem;
+    }
+
+    /* ── CARDS ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.6rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 1.4rem 1.2rem;
+      border-radius: 2px;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.7rem;
+    }
+    .card h4 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .card p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── COMPONENTS TABLE (internet) ── */
+    .comp-list {
+      list-style: none;
+      margin-top: 1.2rem;
+    }
+    .comp-list li {
+      display: flex;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.92rem;
+    }
+    .comp-list li:last-child { border-bottom: none; }
+    .comp-tag {
+      flex-shrink: 0;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 2px;
+      height: fit-content;
+      margin-top: 2px;
+    }
+
+    /* ── FEATURES GRID ── */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-top: 1.6rem;
+    }
+    .feat-cell {
+      background: var(--paper);
+      padding: 1.2rem 1rem;
+    }
+    .feat-cell h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.04em;
+    }
+    .feat-cell p {
+      font-size: 0.8rem;
+      color: var(--mid);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ── ALERT BOX ── */
+    .alert {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-left: 4px solid var(--red);
+      padding: 1.2rem 1.2rem;
+      border-radius: 2px;
+      margin: 1.6rem 0;
+    }
+    .alert-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--red);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .alert p {
+      font-size: 0.88rem;
+      color: #7f1d1d;
+      margin: 0;
+    }
+
+    /* ── STAT CALLOUT ── */
+    .stat-callout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.6rem 0;
+    }
+    .stat-box {
+      background: var(--highlight);
+      border: 1px solid #bdd0e8;
+      padding: 1rem 1.4rem;
+      border-radius: 2px;
+      flex: 1;
+      min-width: 160px;
+    }
+    .stat-box .big {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+    .stat-box .desc {
+      font-size: 0.78rem;
+      color: var(--mid);
+      margin-top: 0.3rem;
+    }
+
+    /* ── TIMELINE (뉴미디어) ── */
+    .timeline { margin-top: 1.6rem; }
+    .tl-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+    .tl-content h4 {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+    .tl-content p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      margin: 0;
+    }
+
+    /* ── SIDEBAR QUOTE ── */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 1.8rem 0;
+      padding: 0.8rem 1.2rem;
+      background: var(--highlight);
+    }
+    blockquote p {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    /* ── CRIME CARDS ── */
+    .crime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.6rem;
+    }
+    .crime-card {
+      border: 1px solid var(--rule);
+      background: #fff;
+      padding: 1.4rem;
+      border-radius: 2px;
+      border-top: 3px solid var(--red);
+    }
+    .crime-card h4 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 0.6rem;
+    }
+    .crime-card p {
+      font-size: 0.84rem;
+      color: #444;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+    footer strong { color: rgba(255,255,255,0.7); }
+
+    @media (max-width: 600px) {
+      .feat-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { gap: 1.5rem; }
+      .stat-num { font-size: 1.4rem; }
+      nav { gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">디지털 미디어 윤리</span>
+  <a href="#internet">인터넷</a>
+  <a href="#newmedia">뉴미디어</a>
+  <a href="#ai">AI 확장</a>
+  <a href="#sideeffects">부작용</a>
+  <a href="#youth">청소년 현황</a>
+  <a href="#literacy">미디어 리터러시</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">정보기술 발전과 사회적 책임</p>
+  <h1>AI 기반 디지털 미디어 환경에서<br>콘텐츠 윤리와 미디어 리터러시</h1>
+  <p class="hero-sub">인터넷의 탄생부터 뉴미디어, 인공지능으로 이어지는 정보기술의 발전은 우리 사회 전반을 변화시켰다. 그러나 기술의 빠른 진보는 새로운 윤리적 과제를 함께 낳고 있다.</p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">1만+</span>
+      <span class="stat-label">2024년 디지털 성범죄 피해자</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">227%</span>
+      <span class="stat-label">딥페이크 피해 전년 대비 증가율</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">40억$</span>
+      <span class="stat-label">MS가 1년간 차단한 AI 사기 규모</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 1. 인터넷 ── -->
+<section id="internet">
+  <div class="container">
+    <p class="section-label"><span>01</span> — 인터넷의 이해</p>
+    <h2>인터넷이란 무엇인가</h2>
+    <p class="lead">인터넷은 서로 다른 성질을 가진 네트워크들을 컴퓨터 기종과 운영체제에 관계없이 통합한 '네트워크의 네트워크'로, 지리적으로 멀리 떨어진 컴퓨터들을 연결하여 정보자원을 공동으로 이용할 수 있게 한 세계 최대의 정보통신망이다.</p>
+    <p>인터넷에 연결된 모든 컴퓨터를 호스트라 부르며, 통신망은 데이터 전달 방식에 따라 교환망(회선교환망·패킷교환망)과 방송망(근거리통신망·위성통신망)으로 구분된다. 또한 전송 범위에 따라 근거리 통신망(LAN)과 광역 통신망(WAN)으로 나뉜다.</p>
+    <p>인터넷은 단순한 통신망을 넘어 세 가지 의미를 가진다. 전 세계를 잇는 <strong>컴퓨터 통신망</strong>이자, 그 안에 담긴 방대한 <strong>정보</strong>이며, 이를 만들고 이용하는 사람들의 <strong>공동체</strong>다. 특정 집단이 아닌 이용자들이 자율적으로 관리하는 무정부적 공동체(anarchical community)의 성격을 지닌다는 점이 특징이다.</p>
+
+    <h3>핵심 구성요소</h3>
+    <ul class="comp-list">
+      <li><span class="comp-tag">WWW</span>하이퍼텍스트 개념을 도입한 정보검색서비스로, 문자·그림·동화상·소리를 지원하며 원격접속·파일전송·전자우편 기능을 포괄한다.</li>
+      <li><span class="comp-tag">TCP/IP</span>데이터를 패킷 단위로 전송하는 통신규약. IP는 패킷을 목적지로 옮기고, TCP는 데이터 흐름을 관리·확인한다.</li>
+      <li><span class="comp-tag">ATM</span>음성·영상·데이터 등 다양한 매체를 수용하는 비동기 전송 모드 스위칭 기술.</li>
+      <li><span class="comp-tag">표시언어</span>정보의 작성·편집·인쇄를 위한 인터넷 언어. WWW와 연계되어 인터넷 언어로도 불린다.</li>
+      <li><span class="comp-tag">보안기술</span>암호화(encryption)와 방화벽(firewall)을 통해 비밀성·무결성·가용성을 보장한다.</li>
+    </ul>
+
+    <h3>인터넷의 6가지 특징</h3>
+    <div class="feat-grid">
+      <div class="feat-cell"><h4>접근 용이성</h4><p>표준화된 규정만 따르면 기종에 관계없이 접속 가능한 개방성</p></div>
+      <div class="feat-cell"><h4>정보의 다양성</h4><p>방대한 멀티미디어 정보 제공, 이용자가 소비자이자 정보제공자</p></div>
+      <div class="feat-cell"><h4>시간 초월성</h4><p>24시간 운영, 언제든지 접속과 정보 공유 가능</p></div>
+      <div class="feat-cell"><h4>공간 극복성</h4><p>지리적 거리가 장애가 되지 않는 세계적 통신망</p></div>
+      <div class="feat-cell"><h4>상호작용성</h4><p>일방향이 아닌 양방향 정보 흐름이 가능한 쌍방향 매체</p></div>
+      <div class="feat-cell"><h4>멀티미디어성</h4><p>문자·음성·화상·동영상을 통합적으로 전달하는 복합 매체</p></div>
+    </div>
+
+    <h3>주요 인터넷 서비스</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">✉️</div><h4>전자우편</h4><p>인터넷의 가장 기본 서비스로, 신속하고 저렴하게 정보를 교환하는 수단</p></div>
+      <div class="card"><div class="card-icon">🖥️</div><h4>원격지 시스템 접속</h4><p>멀리 떨어진 호스트 컴퓨터에 직접 접속하여 제어하는 서비스</p></div>
+      <div class="card"><div class="card-icon">📁</div><h4>파일 전송</h4><p>원격 호스트와 자신의 컴퓨터 간 파일을 주고받는 서비스</p></div>
+      <div class="card"><div class="card-icon">📬</div><h4>메일링 리스트</h4><p>특정 주제 관심자들이 등록하여 정보를 주고받는 그룹 서비스</p></div>
+      <div class="card"><div class="card-icon">🌐</div><h4>월드 와이드 웹</h4><p>하이퍼링크 기반의 멀티미디어 정보 접근 도구로 인터넷의 핵심</p></div>
+      <div class="card"><div class="card-icon">💬</div><h4>대화 서비스</h4><p>인터넷 이용자들과 실시간으로 대화를 나눌 수 있는 서비스</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2. 뉴미디어 ── -->
+<section id="newmedia">
+  <div class="container">
+    <p class="section-label"><span>02</span> — 뉴미디어</p>
+    <h2>뉴미디어의 등장과 발전</h2>
+    <p class="lead">뉴미디어는 컴퓨터와 통신기술을 결합하여 과거와 전혀 다른 형태의 정보 수집·처리·전송·이용을 가능하게 하는 정보전달 매체다. 단순한 기술 변화가 아닌, 정보를 생산하고 소비하는 방식 자체의 근본적 전환을 의미한다.</p>
+
+    <h3>뉴미디어를 이해하는 세 가지 관점</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>진화론적 관점</h4>
+        <p>기존 미디어의 연장선에서 이해. 인터넷 방송은 라디오·TV의 기술적 확장, 전자신문은 종이신문의 범위를 넓힌 것으로 본다.</p>
+      </div>
+      <div class="card">
+        <h4>혁명론적 관점</h4>
+        <p>기존 미디어와 근본적으로 다른 차원의 새로운 수단으로 봄. VOD, 직접위성방송, 원격화상회의 등은 전혀 새로운 관점에서 이해해야 한다.</p>
+      </div>
+      <div class="card">
+        <h4>멀티미디어 관점</h4>
+        <p>정보를 디지털화하고 통합처리하며 쌍방향 유통을 가능하게 하는 복합미디어로 정의. 세 관점은 상호보완적으로 이해해야 한다.</p>
+      </div>
+    </div>
+
+    <h3>뉴미디어 등장의 배경</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>기술의 혁신과 융합</h4><p>반도체·컴퓨터 등 전기·전자 분야의 기술혁신으로 정보의 고밀도화·저가격화·대용량화가 실현됨</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>사회적 수요의 변화</h4><p>지식정보사회로 진입하며 전문 정보부터 일상 정보까지 다양한 공유 필요성 증대</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>기존 미디어의 전환기</h4><p>전화·TV 등 기본 미디어가 이미 보급 포화 상태에 이르러 새로운 미디어 모색</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>국제적 경쟁과 협조</h4><p>인공위성을 통한 정보공유는 국경을 넘나드는 문제를 야기하며 국제적 협조와 경쟁 필요</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>정보통신 정책의 전환</h4><p>주요 선진국들이 뉴미디어 개발 촉진을 국가 과제로 삼고 자율화 지향 정책 추진</p></div></div>
+    </div>
+
+    <h3>뉴미디어의 5가지 기술적 특징</h3>
+    <div class="feat-grid">
+      <div class="feat-cell"><h4>디지털화</h4><p>모든 정보를 디지털 신호로 통일. 정밀도 높고 동일 회선으로 음성·영상 전송 가능</p></div>
+      <div class="feat-cell"><h4>종합화</h4><p>유·무선 전송수단을 융합한 정보망. ISDN, 부가가치통신망(VAN) 등으로 구현</p></div>
+      <div class="feat-cell"><h4>영상화</h4><p>문자·음성·영상 등이 TV 스크린을 통해 영상 정보 형태로 전환되는 경향</p></div>
+      <div class="feat-cell"><h4>상호작용화</h4><p>일방향 정보전달에서 쌍방향으로 전환. 수용자가 정보를 능동적으로 선택 가능</p></div>
+      <div class="feat-cell"><h4>비동시화</h4><p>정보 전달자와 수용자가 동시에 참여하지 않아도 되는 시간적 자유</p></div>
+      <div class="feat-cell"><h4>멀티미디어화</h4><p>영상·음성·문자를 하나의 미디어로 통합처리하는 복합미디어</p></div>
+    </div>
+
+    <h3>뉴미디어의 사회적 활용</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🗳️</div><h4>전자민주주의</h4><p>쌍방향 커뮤니케이션을 통해 시민의 능동적 정치참여 기반 마련</p></div>
+      <div class="card"><div class="card-icon">🏛️</div><h4>전자정부</h4><p>행정정보를 체계적으로 구축·공유하고 시민 편의를 도모하는 디지털 행정</p></div>
+      <div class="card"><div class="card-icon">🛒</div><h4>전자상거래</h4><p>출판·유통·은행 등 거의 모든 산업 분야의 가치사슬을 근본적으로 변화</p></div>
+      <div class="card"><div class="card-icon">📚</div><h4>전자교육</h4><p>학습자 수준별 맞춤 교육과 즉각적 피드백을 제공하는 컴퓨터지원교육</p></div>
+      <div class="card"><div class="card-icon">🏥</div><h4>원격진료</h4><p>CT·MRI 등 진단도구와 원격진료로 지리적 의료 격차 해소</p></div>
+      <div class="card"><div class="card-icon">🎭</div><h4>전자문화</h4><p>디지털 기술이 문화적 사고와 행동 방식 자체에 영향을 미침</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. AI ── -->
+<section id="ai">
+  <div class="container">
+    <p class="section-label"><span>03</span> — AI로의 확장</p>
+    <h2>인터넷 → 뉴미디어 → 인공지능</h2>
+    <p class="lead">인터넷이 정보의 디지털화와 연결을 이루고, 뉴미디어가 정보의 쌍방향·통합화를 이끌었다면, 인공지능(AI)은 정보의 자동 분석·생성·개인화·예측까지 가능하게 함으로써 정보기술 발전의 다음 단계를 열고 있다.</p>
+
+    <blockquote><p>"AI는 기존 뉴미디어의 기반 위에서 정보처리의 질적 변화를 만들어낸다. 과거 뉴미디어가 기술의 결합으로 새 매체를 탄생시켰다면, AI는 그 매체 위에서 자동화된 분석과 생성, 예측을 더한다."</p></blockquote>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h4>정보검색의 진화</h4>
+        <p>인터넷의 정보검색 서비스는 AI 기반 검색엔진과 개인화 추천 시스템으로 발전. 이용자가 원하는 정보를 더욱 정교하게 찾아준다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>상호작용의 고도화</h4>
+        <p>전자우편·대화서비스 같은 상호작용 기능은 AI 챗봇과 가상비서로 확장되어 인간과 기계 간 자연스러운 의사소통을 가능하게 한다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h4>생성형 AI의 등장</h4>
+        <p>멀티미디어 기술과 AI가 결합된 생성형 AI(Generative AI)는 이미지·음성·영상을 자동으로 만들어내며 콘텐츠 제작 방식 자체를 바꾸고 있다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎓</div>
+        <h4>적응형 학습</h4>
+        <p>뉴미디어의 전자교육이 AI와 결합해 학습자 개개인의 수준과 패턴을 분석하는 맞춤형 적응형 학습(adaptive learning)으로 진화했다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏥</div>
+        <h4>AI 의료 진단</h4>
+        <p>원격진료에서 더 나아가 AI가 의료영상을 분석하고 질병을 예측하는 진단보조 도구로 활용되고 있다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h4>AI 행정·상거래</h4>
+        <p>전자정부에서는 AI가 데이터를 분석해 정책결정을 지원하고, 전자상거래에서는 개인화 추천과 자동화 고객서비스를 제공한다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. 부작용 ── -->
+<section id="sideeffects">
+  <div class="container">
+    <p class="section-label"><span>04</span> — 기술 발전의 이면</p>
+    <h2>부작용과 윤리적 과제</h2>
+    <p class="lead">인터넷·뉴미디어·AI로 이어지는 정보기술의 발전은 편의성과 효율성을 극대화하는 동시에, 범죄의 정교화·사생활 침해·정보 조작·사회 양극화라는 어두운 이면을 함께 키우고 있다.</p>
+
+    <div class="alert">
+      <p class="alert-title">⚠ 핵심 현황</p>
+      <p>2024년 디지털 성범죄 피해자가 처음으로 1만 명을 넘어섰으며, 딥페이크를 활용한 합성·편집 피해는 전년 대비 227% 급증했다. 기술의 속도를 제도와 윤리 교육이 따라잡지 못하는 것이 현재 가장 큰 사회적 과제다.</p>
+    </div>
+
+    <h3>① 딥페이크 성범죄</h3>
+    <div class="stat-callout">
+      <div class="stat-box"><span class="big">1만 305명</span><div class="desc">2024년 디지털 성범죄 피해자 수 (역대 최초 1만 명 돌파)</div></div>
+      <div class="stat-box"><span class="big">227%</span><div class="desc">딥페이크 합성·편집 피해 건수 전년 대비 증가율</div></div>
+      <div class="stat-box"><span class="big">96.6%</span><div class="desc">딥페이크 성범죄 피해자 중 여성 비율</div></div>
+      <div class="stat-box"><span class="big">948명</span><div class="desc">2024년 학교 딥페이크 성범죄 피해 학생 수</div></div>
+    </div>
+    <p>딥페이크 기술은 AI 합성 기술을 활용하여 실제 인물의 얼굴을 다른 영상에 합성하는 기술이다. 초기에는 영화 특수효과 등에 활용됐으나, 현재는 성범죄·사기·가짜뉴스 등에 광범위하게 악용되고 있다. 특히 텔레그램 등 익명 플랫폼을 통해 유포되며, 한번 퍼진 영상은 사실상 삭제가 불가능한 수준이다. 피해자의 연령이 낮아져 학교라는 일상 공간이 흔들리고 있다는 점이 더욱 심각하다.</p>
+
+    <h3>② AI 기반 사기 및 보이스피싱</h3>
+    <div class="crime-grid">
+      <div class="crime-card">
+        <h4>가짜 채용 사기</h4>
+        <p>AI로 생성된 가짜 구직 공고와 가짜 면접관을 통해 구직자의 개인정보를 탈취하는 새로운 사기 유형</p>
+      </div>
+      <div class="crime-card">
+        <h4>AI 보이스피싱</h4>
+        <p>피해자의 목소리를 AI로 복제해 가족이나 지인처럼 속이는 고도화된 보이스피싱. 개인의 신원 자체를 위협하는 단계에 도달</p>
+      </div>
+      <div class="crime-card">
+        <h4>가짜 쇼핑몰·사이트</h4>
+        <p>AI가 실감나는 상품 소개·리뷰·챗봇을 갖춘 가짜 쇼핑몰을 자동 생성해 결제 정보와 개인정보를 탈취</p>
+      </div>
+      <div class="crime-card">
+        <h4>딥페이크 투자 사기</h4>
+        <p>일론 머스크 등 유명인의 얼굴을 합성한 허위 영상으로 가짜 투자 플랫폼으로 유인. 수천만 달러 규모의 피해 발생</p>
+      </div>
+    </div>
+    <p style="margin-top:1rem;">마이크로소프트가 최근 1년간 차단한 AI 기반 사기 시도 규모는 40억 달러에 달하며, 봇을 이용한 계정 생성 시도도 시간당 160만 건에 이른다.</p>
+
+    <h3>③ 개인정보 침해</h3>
+    <p>AI 시스템은 방대한 데이터를 학습하는 과정에서 개인정보 침해 문제를 야기한다. 국내 AI 챗봇 '이루다' 사례에서는 이용자 동의 없이 60만 명의 카카오톡 대화 94억여 문장이 AI 학습에 활용되었다. 2024년에는 한 대형 통신사의 고객정보 300만 건이 외부 AI 학습 서버에 저장된 사실이 드러나기도 했다. 전문가들은 개인정보 침해를 단순한 보안 사고가 아닌 'AI 시대의 데이터 인권' 문제로 인식해야 한다고 강조한다.</p>
+
+    <h3>④ 가짜 뉴스와 정보 조작</h3>
+    <p>딥페이크 기술은 유명 정치인이나 사회 인사의 얼굴을 합성한 가짜 뉴스 제작에도 활용되며, 정치적·사회적 불안감을 조성한다. AI는 설득력 있는 허위 정보를 대량으로 빠르게 생산할 수 있어 선거·여론 조작에 악용될 위험이 크다. 생성형 AI로 만든 가짜 뉴스는 실제와 구별이 매우 어려워 진실 판별이 점점 더 어려워지는 '탈진실(post-truth)' 사회의 심화를 가속화하고 있다.</p>
+
+    <h3>⑤ 알고리즘 편향과 필터 버블</h3>
+    <p>AI 추천 알고리즘은 이용자의 관심사와 유사한 콘텐츠만 반복 노출함으로써 '필터 버블' 현상을 만들어낸다. 이용자는 자신과 다른 의견이나 다양한 시각을 접할 기회를 잃게 되고, 사회 전체적으로는 집단 극단화와 정보 편식 현상이 심화된다. 유튜브·인스타그램·틱톡 등 주요 플랫폼의 알고리즘이 자극적이고 편향된 콘텐츠를 더 많이 노출시켜 사용자의 체류 시간을 늘리는 방식으로 작동하면서, 사회적 갈등과 혐오 표현 확산에도 기여하고 있다.</p>
+  </div>
+</section>
+
+<!-- ── 5. 청소년 현황 ── -->
+<section id="youth">
+  <div class="container">
+    <p class="section-label"><span>05</span> — 청소년과 디지털 미디어</p>
+    <h2>청소년의 미디어 이용 현황</h2>
+    <p class="lead">2019년 기준, 청소년의 모바일 인터넷 이용률은 97.2%에 달한다. 이미 사실상 전체 청소년이 스마트폰을 통해 인터넷을 사용하고 있으며, 디지털 미디어는 청소년의 일상 그 자체가 되었다.</p>
+
+    <h3>일상에서 가장 중요하게 여기는 미디어 (2019년)</h3>
+    <div class="stat-callout">
+      <div class="stat-box"><span class="big">85.8%</span><div class="desc">스마트폰 — 1위</div></div>
+      <div class="stat-box"><span class="big">71.1%</span><div class="desc">PC / 컴퓨터 — 2위</div></div>
+      <div class="stat-box"><span class="big">34.5%</span><div class="desc">텔레비전 — 3위</div></div>
+      <div class="stat-box"><span class="big">9.6%</span><div class="desc">라디오 — 4위</div></div>
+      <div class="stat-box"><span class="big">8.4%</span><div class="desc">신문 — 5위</div></div>
+    </div>
+    <p>스마트폰이 텔레비전을 두 배 이상 압도하고, 라디오와 신문은 한 자릿수에 머무는 수치는 청소년의 미디어 환경이 모바일 중심으로 완전히 재편되었음을 보여준다.</p>
+
+    <h3>청소년이 주로 이용하는 미디어 서비스 (2019년)</h3>
+    <ul class="comp-list">
+      <li><span class="comp-tag">81.9%</span>포털 및 검색 엔진 — 정보 탐색의 핵심 창구</li>
+      <li><span class="comp-tag">76.0%</span>메신저 서비스 — 일상적 소통의 중심</li>
+      <li><span class="comp-tag">68.2%</span>온라인 동영상 플랫폼 — 유튜브 등 영상 소비 급증</li>
+      <li><span class="comp-tag">51.2%</span>SNS — 자기표현 및 관계 형성 공간</li>
+      <li><span class="comp-tag">28.7%</span>AI 스피커 — 음성 기반 AI 서비스 보급 시작</li>
+    </ul>
+
+    <h3>청소년 스마트폰 보유율 변화 추이</h3>
+    <p>정보통신정책연구원의 2018년 조사에 따르면, 스마트폰 보유율은 불과 6년 만에 세대를 가리지 않고 폭발적으로 증가했다.</p>
+    <div class="crime-grid">
+      <div class="crime-card" style="border-top-color: var(--accent);">
+        <h4 style="color: var(--accent);">초등학교 3~6학년</h4>
+        <p>2011년 <strong>3.9%</strong>에 불과했던 보유율이 2017년 <strong>70.2%</strong>로 6년간 무려 <strong>66.3% 상승</strong>. 초등학생 10명 중 7명이 스마트폰을 보유하는 시대가 됨.</p>
+      </div>
+      <div class="crime-card" style="border-top-color: var(--accent);">
+        <h4 style="color: var(--accent);">중·고등학생</h4>
+        <p>2011년 <strong>17.4%</strong>였던 보유율이 2012년부터 급격히 상승하여 2017년 <strong>93.0%</strong>로 6년간 <strong>75.6% 상승</strong>. 사실상 전체 중·고생이 스마트폰 사용자.</p>
+      </div>
+    </div>
+
+    <blockquote><p>청소년이 태어날 때부터 스마트폰과 함께 자라는 '디지털 네이티브' 세대가 된 지금, 미디어 리터러시 교육은 선택이 아닌 필수다. 높은 이용률만큼이나 올바른 미디어 사용 능력을 갖추는 것이 중요하다.</p></blockquote>
+  </div>
+</section>
+
+<!-- ── 6. 미디어 리터러시 ── -->
+<section id="literacy">
+  <div class="container">
+    <p class="section-label"><span>06</span> — 대응과 방향</p>
+    <h2>미디어 리터러시와 콘텐츠 윤리</h2>
+    <p class="lead">기술의 빠른 발전이 새로운 위협을 만들어내는 지금, 가장 중요한 방패는 기술이 아닌 사람이다. 미디어 리터러시는 디지털 시대를 살아가는 모든 사람에게 요구되는 핵심 역량이다.</p>
+
+    <h3>미디어 리터러시란</h3>
+    <p>미디어 리터러시(Media Literacy)는 다양한 형태의 미디어 메시지를 접근·분석·평가·창조하는 능력을 의미한다. AI 시대에는 여기에 더하여 알고리즘의 작동 방식을 이해하고, 딥페이크와 실제를 구별하며, 정보의 출처와 신뢰성을 비판적으로 판단하는 능력까지 포함된다.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🧐</div>
+        <h4>비판적 정보 판단</h4>
+        <p>뉴스나 콘텐츠를 접할 때 출처를 확인하고, 다양한 관점에서 정보의 신뢰성을 평가하는 습관 형성</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔎</div>
+        <h4>딥페이크 식별 능력</h4>
+        <p>영상의 부자연스러운 움직임, 얼굴 경계선, 음성 싱크 등을 확인하고, AI 탐지 도구를 활용하는 능력</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h4>개인정보 보호 의식</h4>
+        <p>자신의 얼굴·음성·개인정보가 AI 학습에 활용될 수 있다는 인식과 이를 보호하는 실천 능력</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h4>알고리즘 이해</h4>
+        <p>추천 알고리즘이 필터 버블을 만들 수 있음을 인식하고, 의도적으로 다양한 출처의 정보를 탐색</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h4>디지털 윤리 의식</h4>
+        <p>온라인에서의 행동이 타인에게 미치는 영향을 인식하고, 사이버 범죄를 범죄로 명확히 인식하는 태도</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📣</div>
+        <h4>제도적 참여</h4>
+        <p>딥페이크 방지법, 개인정보보호법 등 정책에 관심을 갖고, 피해 신고와 삭제 지원 제도를 적극 활용</p>
+      </div>
+    </div>
+
+    <h3>콘텐츠 윤리의 원칙</h3>
+    <ul class="comp-list">
+      <li><span class="comp-tag">진실성</span>사실에 근거한 정보를 생산하고, 불확실한 정보는 명확히 표시하며 의도적 허위 정보 생산을 금지</li>
+      <li><span class="comp-tag">존중</span>타인의 얼굴·음성·개인정보를 동의 없이 AI 학습이나 콘텐츠 제작에 활용하지 않는 원칙</li>
+      <li><span class="comp-tag">투명성</span>AI가 생성한 콘텐츠임을 명확히 표기하고, 알고리즘의 작동 방식을 이용자에게 공개</li>
+      <li><span class="comp-tag">책임성</span>온라인에서의 발언과 콘텐츠 유포에 대한 사회적 책임을 인식하고 이행</li>
+      <li><span class="comp-tag">포용성</span>디지털 기술 접근에서 소외된 계층을 고려하고, 정보 격차 해소를 위한 노력 지속</li>
+    </ul>
+
+    <blockquote><p>기술은 중립적이다. 그러나 기술을 사용하는 사람은 중립적일 수 없다. 인터넷에서 뉴미디어로, 뉴미디어에서 AI로 이어지는 정보기술의 발전은 결국 그것을 사용하는 사람의 윤리 의식과 미디어 리터러시 수준에 따라 축복이 되기도 하고 재앙이 되기도 한다.</p></blockquote>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>AI 기반 디지털 미디어 환경에서 콘텐츠 윤리와 미디어 리터러시</strong><br><br>
+  인터넷의 이해 · 뉴미디어 · AI 확장 · 부작용 · 청소년 현황 · 미디어 리터러시
+</footer>
+
+</body>
+</html>
